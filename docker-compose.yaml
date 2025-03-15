@@ -1,0 +1,11 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    container_name: 'users_db'
+    restart: 'always'
+    environment:
+      - 'POSTGRES_DB=users'
+      - 'POSTGRES_PASSWORD=root'
+      - 'POSTGRES_USER=postgres'
+    ports:
+      - '5432:5432'
