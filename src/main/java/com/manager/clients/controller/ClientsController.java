@@ -1,6 +1,6 @@
 package com.manager.clients.controller;
 
-import com.manager.clients.models.ClientsModel;
+import com.manager.clients.models.Clients;
 import com.manager.clients.repository.ClientsRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +19,14 @@ public class ClientsController {
     }
 
     // MÉTODOS
+
+    // Busca geral
     @GetMapping(path = "/")
-    public List findAll(){
+    public List<Clients> findAll(){
         return repository.findAll();
     }
 
+    // Busca especifica
     @GetMapping(path = {"/{id}"})
     public ResponseEntity findById(@PathVariable long id){
         return repository.findById(id)
@@ -31,23 +34,29 @@ public class ClientsController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // Criar
     @PostMapping
-    public ClientsModel create(@RequestBody ClientsModel clientsModel) {
-        return repository.save(clientsModel);
+    public ResponseEntity<?> create(@RequestBody Clients clients) {
+        System.out.println("Recebido: " + clients);
+        Clients savedClient = repository.save(clients);
+        System.out.println("Salvo no banco: " + savedClient);
+        return ResponseEntity.ok(savedClient);
     }
 
+    // Atualizar
     @PutMapping(path = "/{id}")
-    public ResponseEntity update(@PathVariable("id") long id, @RequestBody ClientsModel clientsModel){
+    public ResponseEntity update(@PathVariable("id") long id, @RequestBody Clients clients){
         return repository.findById(id)
                 .map(record -> {
-                    record.setName(clientsModel.getName());
-                    record.setEmail(clientsModel.getEmail());
-                    record.setPassword(clientsModel.getPassword());
-                    ClientsModel updated = repository.save(record);
+                    record.setName(clients.getName());
+                    record.setEmail(clients.getEmail());
+                    record.setPassword(clients.getPassword());
+                    Clients updated = repository.save(record);
                     return ResponseEntity.ok().body(updated);
                 }).orElse(ResponseEntity.notFound().build());
     }
 
+    // Atualizar
     @DeleteMapping(path = {"/{id}"})
     public ResponseEntity <?> delete(@PathVariable long id) {
         return repository.findById(id)
