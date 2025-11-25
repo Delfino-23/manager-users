@@ -3,6 +3,7 @@ package com.manager.clients.controller;
 import com.manager.clients.models.Instructors;
 import com.manager.clients.repository.InstructorsRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +14,11 @@ public class InstructorsController {
 
     // REPOSITORIO
     private final InstructorsRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    InstructorsController(InstructorsRepository instructorsRepository) {
+    InstructorsController(InstructorsRepository instructorsRepository, PasswordEncoder passwordEncoder) {
         this.repository = instructorsRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // MÉTODOS
@@ -38,6 +41,9 @@ public class InstructorsController {
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Instructors instructors) {
         System.out.println("Recebido: " + instructors);
+        if (instructors.getPassword() != null && !instructors.getPassword().isBlank()) {
+            instructors.setPassword(passwordEncoder.encode(instructors.getPassword()));
+        }
         Instructors savedInstructor = repository.save(instructors);
         System.out.println("Salvo no banco: " + savedInstructor);
         return ResponseEntity.ok(savedInstructor);

@@ -3,6 +3,7 @@ package com.manager.clients.controller;
 import com.manager.clients.models.Users;
 import com.manager.clients.repository.UsersRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +14,11 @@ public class UsersController {
 
     // REPOSITORIO
     private final UsersRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    UsersController(UsersRepository usersRepository) {
+    UsersController(UsersRepository usersRepository, PasswordEncoder passwordEncoder) {
         this.repository = usersRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // MÉTODOS
@@ -38,6 +41,9 @@ public class UsersController {
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Users users) {
         System.out.println("Recebido: " + users);
+        if (users.getPassword() != null && !users.getPassword().isBlank()) {
+            users.setPassword(passwordEncoder.encode(users.getPassword()));
+        }
         Users savedUser = repository.save(users);
         System.out.println("Salvo no banco: " + savedUser);
         return ResponseEntity.ok(savedUser);
@@ -50,7 +56,10 @@ public class UsersController {
                 .map(record -> {
                     record.setName(users.getName());
                     record.setEmail(users.getEmail());
-                    record.setPassword(users.getPassword());
+                    if (users.getPassword() != null && !users.getPassword().isBlank()) {
+                        // encode new password
+                        record.setPassword(passwordEncoder.encode(users.getPassword()));
+                    }
                     record.setPhone(users.getPhone());
                     record.setCpf(users.getCpf());
                     record.setCourse(users.getCourse());

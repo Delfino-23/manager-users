@@ -3,6 +3,7 @@ package com.manager.clients.controller;
 import com.manager.clients.models.Administrators;
 import com.manager.clients.repository.AdministratorsRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +14,11 @@ public class AdministratorsController {
 
     // REPOSITORIO
     private final AdministratorsRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    AdministratorsController(AdministratorsRepository administratorsRepository) {
+    AdministratorsController(AdministratorsRepository administratorsRepository, PasswordEncoder passwordEncoder) {
         this.repository = administratorsRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // MÉTODOS
@@ -38,6 +41,9 @@ public class AdministratorsController {
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Administrators administrators) {
         System.out.println("Recebido: " + administrators);
+        if (administrators.getPassword() != null && !administrators.getPassword().isBlank()) {
+            administrators.setPassword(passwordEncoder.encode(administrators.getPassword()));
+        }
         Administrators savedAdmin = repository.save(administrators);
         System.out.println("Salvo no banco: " + savedAdmin);
         return ResponseEntity.ok(savedAdmin);
