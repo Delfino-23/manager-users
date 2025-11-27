@@ -1,7 +1,10 @@
 package com.manager.clients.payload;
 
 import java.util.List;
-
+/**
+ * Classe de resposta JWT.
+ * Contém o token JWT, o tipo de token, o email do usuário e suas funções.
+ */
 public class JwtResponse {
     private String token;
     private String type = "Bearer";

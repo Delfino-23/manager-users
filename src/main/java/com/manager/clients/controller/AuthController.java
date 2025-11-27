@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Controlador REST responsável pela autenticação de usuários.
+ */
 @RestController
 @RequestMapping("/auth")
 public class AuthController {

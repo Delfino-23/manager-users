@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controlador REST para gerenciar operações relacionadas aos usuários.
+ */
 @RestController
 @RequestMapping({"/users"})
 public class UsersController {

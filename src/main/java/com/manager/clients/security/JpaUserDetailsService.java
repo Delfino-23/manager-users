@@ -14,6 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Serviço de detalhes do usuário que carrega informações de usuários, administradores e instrutores
+ * para autenticação e autorização no sistema.
+ */
 @Service
 public class JpaUserDetailsService implements UserDetailsService {
 
@@ -21,6 +25,7 @@ public class JpaUserDetailsService implements UserDetailsService {
     private final AdministratorsRepository administratorsRepository;
     private final InstructorsRepository instructorsRepository;
 
+    // Construtor para injeção de dependências
     public JpaUserDetailsService(UsersRepository usersRepository,
                                  AdministratorsRepository administratorsRepository,
                                  InstructorsRepository instructorsRepository) {
@@ -29,6 +34,7 @@ public class JpaUserDetailsService implements UserDetailsService {
         this.instructorsRepository = instructorsRepository;
     }
 
+    // Método para carregar os detalhes do usuário com base no nome de usuário
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // Primeiro, tente buscar nas users (credenciais primárias)

@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Repositório para operações CRUD e consultas relacionadas a Administradores.
+ */
 @Repository
 public interface AdministratorsRepository extends JpaRepository<Administrators, Long> {
 	Optional<Administrators> findByEmail(String email);

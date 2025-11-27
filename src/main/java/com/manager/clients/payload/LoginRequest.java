@@ -1,5 +1,9 @@
 package com.manager.clients.payload;
 
+/**
+ * Classe de requisição de login.
+ * Contém o email e a senha do usuário.
+ */
 public class LoginRequest {
     private String email;
     private String password;
