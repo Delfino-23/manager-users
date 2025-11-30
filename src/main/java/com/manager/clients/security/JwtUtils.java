@@ -23,6 +23,7 @@ public class JwtUtils {
     @Value("${jwt.expirationMs}")
     private int jwtExpirationMs;
 
+    // Obtém a chave de assinatura 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
@@ -30,6 +31,7 @@ public class JwtUtils {
     // Gera um token JWT para o usuário autenticado
     public String generateJwtToken(Authentication authentication) {
         String username = authentication.getName();
+        // concatena as autoridades dos usuários em uma única string separada por vírgulas
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));

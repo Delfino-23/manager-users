@@ -45,12 +45,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
 
+        // usuário válido, configurar autenticação no contexto de segurança
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (jwtUtils.validateJwtToken(token)) {
+                // cria a autenticação com base no token JWT válido
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                // usuário autenticado 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }

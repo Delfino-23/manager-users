@@ -47,6 +47,7 @@ public class JpaUserDetailsService implements UserDetailsService {
             } else if (instructorsRepository.findByEmail(username).isPresent()) {
                 role = "ROLE_INSTRUCTOR";
             }
+            // define regra de autorização com base no tipo de usuário
             GrantedAuthority authority = new SimpleGrantedAuthority(role);
             return User.withUsername(user.getEmail())
                     .password(user.getPassword())
