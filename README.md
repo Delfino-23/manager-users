@@ -1,4 +1,4 @@
-# Manager Users - Sistema de Gerenciamento de Usuários
+# Student Manager API
 
 Um projeto Spring Boot desenvolvido para gerenciar usuários, administradores, instrutores e cursos, com autenticação JWT e banco de dados MySQL.
 
